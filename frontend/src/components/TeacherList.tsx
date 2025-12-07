@@ -67,13 +67,11 @@ const departments = ["Math", "Physics", "Chemistry", "Biology", "History", "Engl
 
 export default function TeacherList() {
   const [search, setSearch] = useState("");
-  const [department, setDepartment] = useState("all");
   const [sortBy, setSortBy] = useState<"name" | "rating">("name");
   const [showFilters, setShowFilters] = useState(false);
 
   const filteredTeachers = dummyTeachers
     .filter((t) => t.name.toLowerCase().includes(search.toLowerCase()))
-    .filter((t) => department === "all" || t.department === department)
     .sort((a, b) => {
       if (sortBy === "name") return a.name.localeCompare(b.name);
       if (sortBy === "rating") return b.averageRating - a.averageRating;
@@ -85,11 +83,9 @@ export default function TeacherList() {
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
-          Find Your Teacher
+          Leia õpetaja keda tahad hinnata
         </h1>
-        <p className="text-lg text-gray-600 dark:text-gray-300">
-          Search and filter through our database of teachers to find the perfect match for your learning style.
-        </p>
+        
       </div>
 
       {/* Search & Filters */}
@@ -100,7 +96,7 @@ export default function TeacherList() {
             <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
             <input
               type="text"
-              placeholder="Search teachers by name..."
+              placeholder="Otsi õpetajat..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
@@ -113,21 +109,12 @@ export default function TeacherList() {
             className="lg:hidden flex items-center gap-2 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
           >
             <FunnelIcon className="w-5 h-5" />
-            Filters
+            Filtrid
           </button>
 
           {/* Desktop Filters */}
           <div className="hidden lg:flex gap-4">
-            <select
-              value={department}
-              onChange={(e) => setDepartment(e.target.value)}
-              className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-            >
-              <option value="all">All Departments</option>
-              {departments.map((dept) => (
-                <option key={dept} value={dept}>{dept}</option>
-              ))}
-            </select>
+            
 
             <select
               value={sortBy}
@@ -143,24 +130,15 @@ export default function TeacherList() {
         {/* Mobile Filters */}
         {showFilters && (
           <div className="lg:hidden mt-4 pt-4 border-t border-gray-200 dark:border-gray-600 grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <select
-              value={department}
-              onChange={(e) => setDepartment(e.target.value)}
-              className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-            >
-              <option value="all">All Departments</option>
-              {departments.map((dept) => (
-                <option key={dept} value={dept}>{dept}</option>
-              ))}
-            </select>
+            
 
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value as "name" | "rating")}
               className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
             >
-              <option value="name">Sort by Name</option>
-              <option value="rating">Sort by Rating</option>
+              <option value="name">Nime järgi</option>
+              <option value="rating">Hinnangu järgi</option>
             </select>
           </div>
         )}
@@ -170,7 +148,7 @@ export default function TeacherList() {
       {filteredTeachers.length === 0 ? (
         <div className="text-center py-12">
           <p className="text-gray-500 dark:text-gray-400 text-lg mb-4">
-            No teachers found. Try adjusting your search or filters.
+            NÕpetajat ei leitud. Proovi oma otsingut muuta.
           </p>
         </div>
       ) : (

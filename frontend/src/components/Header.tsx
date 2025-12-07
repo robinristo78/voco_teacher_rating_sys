@@ -7,16 +7,15 @@ interface HeaderProps {
   setDarkMode: (darkMode: boolean) => void;
 }
 
-export default function Header({ darkMode, setDarkMode }: HeaderProps) {
+export default function Header({}: HeaderProps) {
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showSignIn, setShowSignIn] = useState(false);
 
   const navigation = [
-    { name: "Home", href: "/" },
-    { name: "Teachers", href: "/teachers" },
-    { name: "About", href: "/about" },
-
+    { name: "Avaleht", href: "/" },
+    { name: "Õpetajad", href: "/teachers" },
+    { name: "Meist", href: "/about" },
   ];
 
   return (
@@ -50,23 +49,15 @@ export default function Header({ darkMode, setDarkMode }: HeaderProps) {
 
           {/* Right side buttons */}
           <div className="flex items-center space-x-4">
-            {/* Dark mode toggle */}
-            <button
-              onClick={() => setDarkMode(!darkMode)}
-              className="p-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors"
-            >
-              {darkMode ? <SunIcon className="w-5 h-5" /> : <MoonIcon className="w-5 h-5" />}
-            </button>
-
-            {/* Auth buttons */}
-      
+            {/* Desktop Log In */}
+            <div className="hidden md:block">
               <button
                 onClick={() => setShowSignIn(true)}
                 className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
               >
-                Sign In
+                Log In
               </button>
-       
+            </div>
 
             {/* Mobile menu button */}
             <button
@@ -96,6 +87,17 @@ export default function Header({ darkMode, setDarkMode }: HeaderProps) {
                   {item.name}
                 </Link>
               ))}
+
+              {/* Mobile Log In button */}
+              <button
+                onClick={() => {
+                  setShowSignIn(true);
+                  setMobileMenuOpen(false);
+                }}
+                className="w-full bg-blue-600 text-white px-3 py-2 rounded-lg text-base font-medium hover:bg-blue-700 transition-colors"
+              >
+                Log In
+              </button>
             </div>
           </div>
         )}
@@ -114,6 +116,7 @@ export default function Header({ darkMode, setDarkMode }: HeaderProps) {
                 <XMarkIcon className="w-6 h-6" />
               </button>
             </div>
+            {/* Add your form here */}
           </div>
         </div>
       )}
