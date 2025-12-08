@@ -1,64 +1,13 @@
 import { Link } from "react-router-dom";
-import TeacherCard from "../components/TeacherCard.tsx"; // import the TeacherCard component
+import TeacherCard from "../components/TeacherCard"; // import the TeacherCard component
+import { teachers } from "../lib/data"; // import the teachers data
+
+// At the top of your component file, before the HomePage function:
+const topTeachers = [...teachers]
+  .sort((a, b) => b.avgRating - a.avgRating) // Sort descending by rating
+  .slice(0, 6); // Take top 6 teachers
 
 export default function HomePage() {
-  // Replace placeholder top teachers with actual data
-  const topTeachers = [
-    {
-      _id: "1",
-      name: "Margit Saar-Sibul",
-      department: "IT Akadeemia",
-      subjects: ["Kutseõpetaja"],
-      profilePicture: "https://siseveeb.voco.ee/veebilehe_andmed/pilt?cs=3722&isik=JIrd0bJJJJJJJJJ",
-      averageRating: 4.8,
-      totalReviews: 12,
-    },
-    {
-      _id: "2",
-      name: "Alice Johnson",
-      department: "Mathematics",
-      subjects: ["Algebra", "Calculus"],
-      profilePicture: "",
-      averageRating: 4.7,
-      totalReviews: 10,
-    },
-    {
-      _id: "3",
-      name: "Bob Smith",
-      department: "Physics",
-      subjects: ["Mechanics", "Thermodynamics"],
-      profilePicture: "",
-      averageRating: 4.5,
-      totalReviews: 8,
-    },
-    {
-      _id: "4",
-      name: "Carol Lee",
-      department: "Chemistry",
-      subjects: ["Organic Chemistry", "Inorganic Chemistry"],
-      profilePicture: "",
-      averageRating: 4.9,
-      totalReviews: 15,
-    },
-    {
-      _id: "5",
-      name: "David Kim",
-      department: "Biology",
-      subjects: ["Genetics", "Ecology"],
-      profilePicture: "",
-      averageRating: 4.3,
-      totalReviews: 5,
-    },
-    {
-      _id: "6",
-      name: "Eva Green",
-      department: "History",
-      subjects: ["World History", "Modern History"],
-      profilePicture: "",
-      averageRating: 4.7,
-      totalReviews: 10,
-    },
-  ];
 
   return (
     <div>
@@ -134,7 +83,7 @@ export default function HomePage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {topTeachers.map((teacher) => (
-              <TeacherCard key={teacher._id} teacher={teacher} />
+              <TeacherCard key={teacher.id} teacher={teacher} />
             ))}
           </div>
 

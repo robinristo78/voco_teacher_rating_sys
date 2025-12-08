@@ -2,8 +2,8 @@ import { Routes, Route } from "react-router-dom";
 import { useState } from "react";
 import Header from "./components/Header";
 import HomePage from "./pages/HomePage.tsx";
-import TeacherList from "./pages/TeacherList.tsx";
-import TeacherProfile from "./components/TeacherProfile";
+import TeachersPage from "./pages/TeachersPage.tsx";
+import TeacherProfile from "./pages/TeacherProfile.tsx";
 import About from "./pages/About.tsx";
 import LoginPage from "./pages/LoginPage.tsx";
 import SignUpPage from "./pages/SignUpPage.tsx";
@@ -18,7 +18,7 @@ export default function App() {
         <main>
           <Routes>
             <Route path="/" element={<HomePage />} />
-            <Route path="/teachers" element={<TeacherList />} />
+            <Route path="/teachers" element={<TeachersPage />} />
             <Route path="/teacher/:id" element={<TeacherProfile />} />
             <Route path="/about" element={<About />} />
             <Route path="/login" element={<LoginPage />} />
