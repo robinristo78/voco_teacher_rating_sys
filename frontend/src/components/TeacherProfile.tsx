@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import { useState } from "react";
 import { StarIcon } from "@heroicons/react/24/solid";
 import { StarIcon as StarOutlineIcon } from "@heroicons/react/24/outline";
-import { EnvelopeIcon, ClockIcon, MapPinIcon, PhoneIcon } from "@heroicons/react/24/outline";
+import { EnvelopeIcon, MapPinIcon, PhoneIcon } from "@heroicons/react/24/outline";
 import { toast } from "sonner";
 
 // Helper to render stars
@@ -40,7 +40,7 @@ interface TeacherData {
 }
 
 export default function TeacherProfile() {
-  const { id } = useParams<{ id: string }>();
+  const {  } = useParams<{ id: string }>();
   const [showReviewForm, setShowReviewForm] = useState(false);
   const [reviewForm, setReviewForm] = useState({
     studentName: "",

@@ -63,7 +63,6 @@ const dummyTeachers: Teacher[] = [
   },
 ];
 
-const departments = ["Math", "Physics", "Chemistry", "Biology", "History", "English"];
 
 export default function TeacherList() {
   const [search, setSearch] = useState("");

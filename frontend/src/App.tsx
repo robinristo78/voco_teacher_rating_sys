@@ -1,10 +1,12 @@
 import { Routes, Route } from "react-router-dom";
+import { useState } from "react";
 import Header from "./components/Header";
 import HomePage from "./pages/HomePage.tsx";
 import TeacherList from "./pages/TeacherList.tsx";
 import TeacherProfile from "./components/TeacherProfile";
-import About from "./pages/About.tsx"; // ✅ Import About
-import { useState } from "react";
+import About from "./pages/About.tsx";
+import LoginPage from "./pages/LoginPage.tsx";
+import SignUpPage from "./pages/SignUpPage.tsx";
 
 export default function App() {
   const [darkMode, setDarkMode] = useState(false);
@@ -18,7 +20,9 @@ export default function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/teachers" element={<TeacherList />} />
             <Route path="/teacher/:id" element={<TeacherProfile />} />
-            <Route path="/about" element={<About />} /> 
+            <Route path="/about" element={<About />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/signup" element={<SignUpPage />} />
           </Routes>
         </main>
       </div>

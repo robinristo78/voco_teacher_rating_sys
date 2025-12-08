@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 
@@ -9,8 +9,8 @@ interface HeaderProps {
 
 export default function Header({}: HeaderProps) {
   const location = useLocation();
+  const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [showSignIn, setShowSignIn] = useState(false);
 
   const navigation = [
     { name: "Avaleht", href: "/" },
@@ -49,13 +49,19 @@ export default function Header({}: HeaderProps) {
 
           {/* Right side buttons */}
           <div className="flex items-center space-x-4">
-            {/* Desktop Log In */}
-            <div className="hidden md:block">
+            {/* Desktop Log In / Sign Up */}
+            <div className="hidden md:flex space-x-2">
               <button
-                onClick={() => setShowSignIn(true)}
+                onClick={() => navigate("/login")}
                 className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
               >
                 Log In
+              </button>
+              <button
+                onClick={() => navigate("/signup")}
+                className="border-2 border-blue-600 text-blue-600 px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-600 hover:text-white transition-colors"
+              >
+                Sign Up
               </button>
             </div>
 
@@ -88,23 +94,29 @@ export default function Header({}: HeaderProps) {
                 </Link>
               ))}
 
-              {/* Mobile Log In button */}
+              {/* Mobile Log In / Sign Up buttons */}
               <button
                 onClick={() => {
-                  setShowSignIn(true);
+                  navigate("/login");
                   setMobileMenuOpen(false);
                 }}
                 className="w-full bg-blue-600 text-white px-3 py-2 rounded-lg text-base font-medium hover:bg-blue-700 transition-colors"
               >
                 Log In
               </button>
+              <button
+                onClick={() => {
+                  navigate("/signup");
+                  setMobileMenuOpen(false);
+                }}
+                className="w-full border-2 border-blue-600 text-blue-600 px-3 py-2 rounded-lg text-base font-medium hover:bg-blue-600 hover:text-white transition-colors"
+              >
+                Sign Up
+              </button>
             </div>
           </div>
         )}
       </nav>
-
-      {/* Sign In Modal */}
-      
     </header>
   );
 }
