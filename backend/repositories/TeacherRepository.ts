@@ -2,12 +2,24 @@ import { Teacher } from "../models/TeacherModel";
 
 export interface CreateTeacherDTO {
 	name: string;
-	description: string;
+	role: string;
+	unit: string;
+	address?: string;
+	room?: string;
+	email?: string;
+	phone?: string;
+	image?: string;
 }
 
 export interface UpdateTeacherDTO {
 	name?: string;
-	description?: string;
+	role?: string;
+	unit?: string;
+	address?: string;
+	room?: string;
+	email?: string;
+	phone?: string;
+	image?: string;
 	avgRating?: number;
 }
 

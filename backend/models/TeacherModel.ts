@@ -4,7 +4,13 @@ import sequelize from "../database";
 interface TeacherAttributes {
 	id?: number;
 	name: string;
-	description?: string;
+	role: string;
+	address?: string;
+	room?: string;
+	unit: string;
+	email?: string;
+	phone?: string;
+	image?: string;
 	avgRating?: number;
 	updatedAt?: Date;
 }
@@ -12,7 +18,13 @@ interface TeacherAttributes {
 class Teacher extends Model<TeacherAttributes> implements TeacherAttributes {
 	public id!: number;
 	public name!: string;
-	public description?: string;
+	public role!: string;
+	public address?: string;
+	public room?: string;
+	public unit!: string;
+	public email?: string;
+	public phone?: string;
+	public image?: string;
 	public avgRating?: number;
 	public updatedAt?: Date;
 }
@@ -28,9 +40,33 @@ Teacher.init(
 			type: DataTypes.STRING(100),
 			allowNull: false,
 		},
-		description: {
-			type: DataTypes.STRING(255),
+		role: {
+			type: DataTypes.STRING(100),
 			allowNull: false,
+		},
+		address: {
+			type: DataTypes.TEXT,
+			allowNull: true,
+		},
+		room: {
+			type: DataTypes.STRING(50),
+			allowNull: true,
+		},
+		unit: {
+			type: DataTypes.STRING(100),
+			allowNull: false,
+		},
+		email: {
+			type: DataTypes.TEXT,
+			allowNull: true,
+		},
+		phone: {
+			type: DataTypes.STRING(50),
+			allowNull: true,
+		},
+		image: {
+			type: DataTypes.TEXT,
+			allowNull: true,
 		},
 		avgRating: {
 			type: DataTypes.DECIMAL(3, 2),
