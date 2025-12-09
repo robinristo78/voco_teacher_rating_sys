@@ -6,13 +6,34 @@ export default function SignUpPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const [emailError, setEmailError] = useState("");
+
+  const handleEmailChange = (value: string) => {
+    setEmail(value);
+
+    if (!value.endsWith("@voco.ee")) {
+      setEmailError("Email peab lõppema @voco.ee");
+    } else {
+      setEmailError("");
+    }
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (emailError) return; // Do not submit if email is invalid
+
     console.log("Name:", name);
     console.log("Email:", email);
     console.log("Password:", password);
-    // Add your sign-up logic here
+
+    // Add your backend sign-up logic here
   };
+
+  const isFormValid =
+    name.trim() !== "" &&
+    password.trim() !== "" &&
+    email.endsWith("@voco.ee");
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900 px-4">
@@ -22,6 +43,7 @@ export default function SignUpPage() {
         </h1>
 
         <form className="space-y-4" onSubmit={handleSubmit}>
+          {/* NAME */}
           <div>
             <label
               className="block text-gray-700 dark:text-gray-300 mb-1"
@@ -34,28 +56,42 @@ export default function SignUpPage() {
               id="name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 
+                text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500
+                focus:outline-none focus:ring-2 focus:ring-purple-500"
               placeholder="täisnimi, hüüdnimi või ema neiupõlvenimi"
             />
           </div>
 
+          {/* EMAIL */}
           <div>
             <label
               className="block text-gray-700 dark:text-gray-300 mb-1"
               htmlFor="email"
             >
-              Email
+              Email (@voco.ee)
             </label>
             <input
               type="email"
               id="email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500"
+              onChange={(e) => handleEmailChange(e.target.value)}
+              className={`w-full px-4 py-2 rounded-lg border ${
+                emailError
+                  ? "border-red-500 focus:ring-red-500"
+                  : "border-gray-300 dark:border-gray-700 focus:ring-purple-500"
+              }
+                text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 
+                focus:outline-none focus:ring-2`}
               placeholder="sisesta email"
             />
+
+            {emailError && (
+              <p className="text-red-500 text-sm mt-1">{emailError}</p>
+            )}
           </div>
 
+          {/* PASSWORD */}
           <div>
             <label
               className="block text-gray-700 dark:text-gray-300 mb-1"
@@ -68,14 +104,23 @@ export default function SignUpPage() {
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700
+                text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500
+                focus:outline-none focus:ring-2 focus:ring-purple-500"
               placeholder="sisesta parool"
             />
           </div>
 
+          {/* BUTTON */}
           <button
             type="submit"
-            className="w-full bg-purple-600 text-white py-2 rounded-lg font-semibold hover:bg-purple-700 transition-colors"
+            disabled={!isFormValid}
+            className={`w-full text-white py-2 rounded-lg font-semibold transition-colors
+              ${
+                isFormValid
+                  ? "bg-purple-600 hover:bg-purple-700"
+                  : "bg-gray-400 cursor-not-allowed"
+              }`}
           >
             Registreeru
           </button>

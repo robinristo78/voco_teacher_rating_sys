@@ -209,43 +209,38 @@ export default function TeacherProfile() {
 
       {/* Review Form */}
       {showReviewForm && (
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-8">
+        <form
+          onSubmit={handleSubmitReview}
+          className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-8"
+        >
           <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
             Kirjuta hinnang
           </h2>
 
-          <form onSubmit={handleSubmitReview} className="space-y-4">
-            <input
-              type="text"
-              placeholder="Sinu nimi"
-              value={reviewForm.studentName}
-              onChange={(e) => setReviewForm({ ...reviewForm, studentName: e.target.value })}
-              className="w-full px-4 py-2 border rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-            />
+          <div className="flex gap-1 mb-4">
+            {renderStars(reviewForm.rating, true, (rating) =>
+              setReviewForm({ ...reviewForm, rating })
+            )}
+          </div>
 
-            <div className="flex gap-1">
-              {renderStars(reviewForm.rating, true, (rating) =>
-                setReviewForm({ ...reviewForm, rating })
-              )}
-            </div>
+          <textarea
+            placeholder="Ütle välja, mida sa arvad..."
+            rows={4}
+            value={reviewForm.comment}
+            onChange={(e) => setReviewForm({ ...reviewForm, comment: e.target.value })}
+            className="w-full px-4 py-2 border rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+          />
 
-            <textarea
-              placeholder="Kirjuta oma kommentaar..."
-              rows={4}
-              value={reviewForm.comment}
-              onChange={(e) => setReviewForm({ ...reviewForm, comment: e.target.value })}
-              className="w-full px-4 py-2 border rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-            />
-
-            <button
-              type="submit"
-              className="bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-blue-700"
-            >
-              Esita
-            </button>
-          </form>
-        </div>
+          <button
+            type="submit"
+            className="bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-blue-700"
+          >
+            Esita
+          </button>
+        </form>
       )}
     </div>
   );
-}
+}       
+
+

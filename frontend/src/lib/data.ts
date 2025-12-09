@@ -1,4 +1,6 @@
-export const teachers = [
+import type { Teacher } from "./types";
+
+export const teachers: Teacher[] = [
   {
     id: "1",
     name: "Margit Saar-Sibul",

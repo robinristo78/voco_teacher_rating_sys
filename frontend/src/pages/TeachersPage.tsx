@@ -46,7 +46,7 @@ export default function TeachersPage() {
         </div>
       ) : (
         <p className="text-center text-gray-600 dark:text-gray-300 mt-12">
-          Õpetajaid ei leitud.
+          Õpetajaid ei leitud. Muuda otsingut.
         </p>
       )}
     </div>
