@@ -8,3 +8,14 @@
 [2025-12-10T12:46:05.894Z] Email: jarl-ivor.burget@voco.ee, Token: df8fbb81-4fc7-4589-88d6-b231e7a8e858, URL: http://localhost:5173/verify?token=df8fbb81-4fc7-4589-88d6-b231e7a8e858
 [2025-12-10T12:55:16.160Z] Email: livetest@voco.ee, Token: bce7f890-196d-4af2-961d-4d281b7a3faf, URL: http://localhost:5173/verify?token=bce7f890-196d-4af2-961d-4d281b7a3faf
 [2025-12-10T12:56:33.500Z] Email: jarl-ivor.burget@voco.ee, Token: f8c36c76-fe45-4679-bedd-ba8940248597, URL: http://localhost:5173/verify?token=f8c36c76-fe45-4679-bedd-ba8940248597
+[2025-12-10T14:34:55.209Z] Email: jarl-ivor.burget@voco.ee, Token: 0a3b611c-ef20-4add-9585-04c21bb5b90d, URL: http://localhost:5173/verify?token=0a3b611c-ef20-4add-9585-04c21bb5b90d
+[2025-12-10T14:37:35.830Z] Email: jarl.burget+deliver1765377455@gmail.com, Token: 131de4b0-77d6-454c-bb85-53d4b1c355d9, URL: http://localhost:5173/verify?token=131de4b0-77d6-454c-bb85-53d4b1c355d9
+[2025-12-10T14:38:33.638Z] Email: jarl-ivor.burget@voco.ee, Token: 7468ce2b-5ee4-4427-a536-a290bb2a32db, URL: http://localhost:5173/verify?token=7468ce2b-5ee4-4427-a536-a290bb2a32db
+[2025-12-10T14:44:14.076Z] Email: realuser1765377853@example.com, Token: 69883498-d8f8-4329-874c-f4571eea35a3, URL: http://localhost:5173/verify?token=69883498-d8f8-4329-874c-f4571eea35a3
+[2025-12-10T14:48:31.350Z] Email: jarl-ivor.burget@voco.ee, Token: 3040f626-ec60-4599-a1bc-9458a9abeda4, URL: http://localhost:5173/verify?token=3040f626-ec60-4599-a1bc-9458a9abeda4
+[2025-12-10T14:59:06.035Z] Email: jarl-ivor.burget@voco.ee, Token: f7a942a4-61cf-4742-b1b9-3b9adfa095ca, URL: http://localhost:5173/verify?token=f7a942a4-61cf-4742-b1b9-3b9adfa095ca
+[2025-12-10T15:12:29.099Z] Email: jarl-ivor.burget@voco.ee, Token: 419a70a9-6b33-468a-af34-234a505da603, URL: http://localhost:5173/verify?token=419a70a9-6b33-468a-af34-234a505da603
+[2025-12-10T15:17:43.300Z] Email: testfix@voco.ee, Token: 71108af2-6949-4b45-9447-deb6e048e9d8, URL: http://localhost:5173/verify?token=71108af2-6949-4b45-9447-deb6e048e9d8
+[2025-12-10T15:17:52.201Z] Email: verifyfixtest@voco.ee, Token: ac652234-e460-4c32-9dc3-eb407360965c, URL: http://localhost:5173/verify?token=ac652234-e460-4c32-9dc3-eb407360965c
+[2025-12-10T15:18:57.652Z] Email: jarl-ivor.burget@voco.ee, Token: 4795701a-93e3-4a0f-b3d8-bb873ec2b782, URL: http://localhost:5173/verify?token=4795701a-93e3-4a0f-b3d8-bb873ec2b782
+[2025-12-10T15:19:53.508Z] Email: jarl-ivor.burget@voco.ee, Token: 2f698917-4393-4037-bb89-a334fab1626c, URL: http://localhost:5173/verify?token=2f698917-4393-4037-bb89-a334fab1626c

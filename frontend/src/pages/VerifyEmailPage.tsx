@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { verifyEmail } from "../api/auth";
@@ -14,12 +14,14 @@ export default function VerifyEmailPage() {
 		token ? "pending" : "info"
 	);
 	const [message, setMessage] = useState<string>("");
+	const verificationAttempted = useRef(false);
 
 	useEffect(() => {
-		if (!token) return;
+		if (!token || verificationAttempted.current) return;
+		verificationAttempted.current = true;
+
 		const doVerify = async () => {
 			try {
-				setStatus("pending");
 				const result = await verifyEmail(token);
 				setStatus("success");
 				setMessage(result.message || "Email kinnitatud. Saad nüüd sisse logida.");
