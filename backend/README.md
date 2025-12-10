@@ -18,15 +18,37 @@ DB_PASSWORD={sinu root parool}
 DB_HOST=localhost
 DB_PORT=3306
 PORT=3000
-# Optional: email verification
-EMAIL_FROM="OpetajateRate <no-reply@yourdomain.ee>"
-SMTP_HOST=smtp.yourdomain.ee
-SMTP_PORT=587
-SMTP_USER=your_smtp_user
-SMTP_PASS=your_smtp_password
-# Frontend base URL used in verification links
-APP_BASE_URL=http://localhost:5173
 ```
+
+## Gmail SMTP seadistamine (App Password)
+
+1. Ava [Google konto turbehaldus](https://myaccount.google.com/security) ja logi sisse oma Gmail kontoga.
+
+2. Luba **2-Step Verification** (kui see pole juba tehtud).
+
+3. Kui 2-Step Verification on lubatud, ava **App Passwords** sektsioon.
+
+4. Vali **Mail** rakenduse tüübiks ja **Other (Custom Name)** seadista näiteks `Voco Verification`.
+
+5. Klikkides **Generate**, saad **16-kohalise App Passwordi**.  
+   Näide: `abcd efgh ijkl mnop`
+
+6. Kopeeri see parool ja lisa oma `.env` faili:
+
+```
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=su.email@gmail.com
+
+SMTP_PASS=kopeeritud_app_password
+EMAIL_FROM=su.email@gmail.com
+```
+
+7. Taaskäivita backend server, et uued SMTP sätted rakenduksid:
+
+pnpm dev
+
+8. Nüüd saad oma rakendusest saata kinnituskirju Gmaili kaudu.
 
 ## Usage
 1. ```pnpm dev``` <br />
