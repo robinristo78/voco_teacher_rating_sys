@@ -7,6 +7,7 @@ import TeacherProfile from "./pages/TeacherProfile.tsx";
 import About from "./pages/About.tsx";
 import LoginPage from "./pages/LoginPage.tsx";
 import SignUpPage from "./pages/SignUpPage.tsx";
+import VerifyEmailPage from "./pages/VerifyEmailPage.tsx";
 import { AuthProvider } from "./context/AuthContext.tsx";
 
 export default function App() {
@@ -24,6 +25,7 @@ export default function App() {
 							<Route path='/about' element={<About />} />
 							<Route path='/login' element={<LoginPage />} />
 							<Route path='/signup' element={<SignUpPage />} />
+							<Route path='/verify' element={<VerifyEmailPage />} />
 						</Routes>
 					</main>
 				</div>

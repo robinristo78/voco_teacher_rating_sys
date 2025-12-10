@@ -6,6 +6,9 @@ interface UserAttributes {
 	name: string;
 	email: string;
 	password: string;
+	isVerified?: boolean;
+	verificationToken?: string | null;
+	verificationExpires?: Date | null;
 	createdAt?: Date;
 }
 
@@ -14,6 +17,9 @@ class User extends Model<UserAttributes> implements UserAttributes {
 	public name!: string;
 	public email!: string;
 	public password!: string;
+	public isVerified?: boolean;
+	public verificationToken?: string | null;
+	public verificationExpires?: Date | null;
 	public createdAt?: Date;
 }
 
@@ -36,6 +42,19 @@ User.init(
 		password: {
 			type: DataTypes.STRING(255),
 			allowNull: false,
+		},
+		isVerified: {
+			type: DataTypes.BOOLEAN,
+			allowNull: false,
+			defaultValue: false,
+		},
+		verificationToken: {
+			type: DataTypes.STRING(255),
+			allowNull: true,
+		},
+		verificationExpires: {
+			type: DataTypes.DATE,
+			allowNull: true,
 		},
 	},
 	{

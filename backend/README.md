@@ -18,6 +18,14 @@ DB_PASSWORD={sinu root parool}
 DB_HOST=localhost
 DB_PORT=3306
 PORT=3000
+# Optional: email verification
+EMAIL_FROM="OpetajateRate <no-reply@yourdomain.ee>"
+SMTP_HOST=smtp.yourdomain.ee
+SMTP_PORT=587
+SMTP_USER=your_smtp_user
+SMTP_PASS=your_smtp_password
+# Frontend base URL used in verification links
+APP_BASE_URL=http://localhost:5173
 ```
 
 ## Usage

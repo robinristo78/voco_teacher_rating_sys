@@ -37,12 +37,9 @@ export default function SignUpPage() {
       });
 
       console.log("Registration successful:", result);
-      toast.success("Registreerimine edukas! Liigute sisselogimise lehele...");
+      toast.success("Registreerimine edukas! Kontrolli oma emaili kinnituslingi jaoks.");
 
-      // Redirect to login page after 1 second
-      setTimeout(() => {
-        navigate("/login");
-      }, 1500);
+      navigate(`/verify?email=${encodeURIComponent(email.trim())}`);
     } catch (error) {
       console.error("Registration error:", error);
       toast.error(error instanceof Error ? error.message : "Registreerimine ebaõnnestus");

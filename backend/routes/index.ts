@@ -20,5 +20,6 @@ router.get("/teachers/:teacherId/ratings", RatingController.getRatingsByTeacher)
 // --- KASUTAJAD (AUTH) ---
 router.post("/auth/register", UserController.register);
 router.post("/auth/login", UserController.login);
+router.get("/auth/verify", UserController.verifyEmail);
 
 export default router;

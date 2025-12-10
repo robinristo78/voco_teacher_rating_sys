@@ -7,6 +7,7 @@ interface AuthContextType {
 		name: string;
 		email: string;
 		createdAt: string;
+		isVerified?: boolean;
 	} | null;
 	isLoggedIn: boolean;
 	login: (user: AuthContextType["user"]) => void;

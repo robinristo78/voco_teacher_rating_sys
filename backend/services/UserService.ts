@@ -4,6 +4,8 @@ import UserRepository, {
 } from "../repositories/UserRepository";
 import { User } from "../models/UserModel";
 import bcrypt from "bcrypt";
+import crypto from "crypto";
+import { sendVerificationEmail } from "./EmailService";
 
 export class UserServiceError extends Error {
 	constructor(message: string, public code: string) {
@@ -86,11 +88,44 @@ class UserService {
 		// Hashida parool
 		const hashedPassword = await bcrypt.hash(data.password, SALT_ROUNDS);
 
-		return UserRepository.create({
+		const verificationToken = crypto.randomUUID();
+		const verificationExpires = new Date(Date.now() + 24 * 60 * 60 * 1000);
+
+		const user = await UserRepository.create({
 			name: data.name.trim(),
 			email: data.email.trim().toLowerCase(),
 			password: hashedPassword,
+			isVerified: false,
+			verificationToken,
+			verificationExpires,
 		});
+
+		// Send verification email; log warning if it fails but don't block registration
+		try {
+			await sendVerificationEmail(user.email, user.name, verificationToken);
+		} catch (emailError) {
+			console.error("Verification email send failed:", emailError);
+		}
+
+		return user;
+	}
+
+	async verifyEmail(token: string): Promise<User> {
+		const user = await UserRepository.findByEmailToken(token);
+		if (!user || !user.verificationToken || user.verificationToken !== token) {
+			throw new UserServiceError("Vigane või aegunud kinnituslink", "INVALID_TOKEN");
+		}
+
+		if (user.verificationExpires && user.verificationExpires < new Date()) {
+			throw new UserServiceError("Kinnituslink on aegunud", "TOKEN_EXPIRED");
+		}
+
+		user.isVerified = true;
+		user.verificationToken = null;
+		user.verificationExpires = null;
+		await user.save();
+
+		return user;
 	}
 
 	async updateUser(id: number, data: UpdateUserDTO): Promise<User> {
@@ -166,6 +201,21 @@ class UserService {
 		const isValid = await bcrypt.compare(password, user.password);
 		if (!isValid) {
 			return null;
+		}
+
+		console.log("DEBUG: User object:", {
+			id: user.id,
+			email: user.email,
+			isVerified: user.isVerified,
+			isVerifiedType: typeof user.isVerified,
+			dataValues: user.dataValues,
+		});
+
+		if (!user.isVerified) {
+			throw new UserServiceError(
+				"Palun kinnita oma email enne sisselogimist",
+				"NOT_VERIFIED"
+			);
 		}
 
 		return user;

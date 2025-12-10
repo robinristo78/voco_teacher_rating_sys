@@ -2,7 +2,7 @@ import * as dotenv from "dotenv";
 
 dotenv.config();
 
-import { Sequelize } from "@sequelize/core";
+import { Sequelize, DataTypes } from "@sequelize/core";
 import { MariaDbDialect } from "@sequelize/mariadb";
 
 const sequelize = new Sequelize({
@@ -27,6 +27,44 @@ export const initDb = async () => {
 
 		// Sync all models with the database
 		await sequelize.sync();
+
+		// Add verification columns if they don't exist (for existing tables)
+		try {
+			await sequelize.getQueryInterface().addColumn("users", "isVerified", {
+				type: DataTypes.BOOLEAN,
+				defaultValue: false,
+				allowNull: false,
+			});
+			console.log("Added isVerified column to users table.");
+		} catch (columnError: any) {
+			if (!columnError.message.includes("Duplicate")) {
+				console.error("Error adding isVerified column:", columnError.message);
+			}
+		}
+
+		try {
+			await sequelize.getQueryInterface().addColumn("users", "verificationToken", {
+				type: DataTypes.STRING(255),
+				allowNull: true,
+			});
+			console.log("Added verificationToken column to users table.");
+		} catch (columnError: any) {
+			if (!columnError.message.includes("Duplicate")) {
+				console.error("Error adding verificationToken column:", columnError.message);
+			}
+		}
+
+		try {
+			await sequelize.getQueryInterface().addColumn("users", "verificationExpires", {
+				type: DataTypes.DATE,
+				allowNull: true,
+			});
+			console.log("Added verificationExpires column to users table.");
+		} catch (columnError: any) {
+			if (!columnError.message.includes("Duplicate")) {
+				console.error("Error adding verificationExpires column:", columnError.message);
+			}
+		}
 		console.log("All models were synchronized successfully.");
 	} catch (error) {
 		console.error("Unable to connect to the database:", error);

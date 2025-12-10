@@ -18,6 +18,7 @@ export interface AuthResponse {
     name: string;
     email: string;
     createdAt: string;
+    isVerified?: boolean;
   };
   error?: string;
 }
@@ -59,6 +60,18 @@ export async function login(payload: LoginPayload): Promise<AuthResponse> {
 
   if (!response.ok) {
     throw new Error(data.error || `Login failed: ${response.status}`);
+  }
+
+  return data;
+}
+
+export async function verifyEmail(token: string): Promise<AuthResponse> {
+  const url = `${API_BASE_URL}/auth/verify?token=${encodeURIComponent(token)}`;
+  const response = await fetch(url);
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.error || `Verification failed: ${response.status}`);
   }
 
   return data;

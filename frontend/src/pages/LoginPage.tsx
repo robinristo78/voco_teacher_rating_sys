@@ -43,9 +43,12 @@ export default function LoginPage() {
 			}, 1500);
 		} catch (error) {
 			console.error("Login error:", error);
-			toast.error(
-				error instanceof Error ? error.message : "Sisselogimine ebaõnnestus"
-			);
+			const message =
+				error instanceof Error ? error.message : "Sisselogimine ebaõnnestus";
+			toast.error(message);
+			if (message.toLowerCase().includes("kinnita")) {
+				navigate(`/verify?email=${encodeURIComponent(email.trim())}`);
+			}
 		} finally {
 			setLoading(false);
 		}
