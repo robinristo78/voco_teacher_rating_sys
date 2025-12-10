@@ -8,6 +8,8 @@ interface RatingAttributes {
 	teacherId?: number;
 	userId?: number;
 	createdAt?: Date;
+	user?: any;
+	teacher?: any;
 }
 
 class Rating extends Model<RatingAttributes> implements RatingAttributes {
@@ -17,6 +19,8 @@ class Rating extends Model<RatingAttributes> implements RatingAttributes {
 	public teacherId?: number;
 	public userId?: number;
 	public createdAt?: Date;
+	public user?: any;
+	public teacher?: any;
 }
 
 Rating.init(

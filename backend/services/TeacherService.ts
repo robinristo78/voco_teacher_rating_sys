@@ -12,16 +12,36 @@ export class TeacherServiceError extends Error {
 }
 
 class TeacherService {
-	async getAllTeachers(): Promise<Teacher[]> {
-		return TeacherRepository.findAll();
+	async getAllTeachers(): Promise<any[]> {
+		const teachers = await TeacherRepository.findAll();
+		
+		// Add ratingCount to each teacher
+		const teachersWithCounts = await Promise.all(
+			teachers.map(async (teacher) => {
+				const ratingCount = await TeacherRepository.getRatingCount(teacher.id);
+				const teacherObj = teacher.toJSON ? teacher.toJSON() : teacher;
+				return {
+					...teacherObj,
+					ratingCount,
+				};
+			})
+		);
+		
+		return teachersWithCounts;
 	}
 
-	async getTeacherById(id: number): Promise<Teacher> {
+	async getTeacherById(id: number): Promise<any> {
 		const teacher = await TeacherRepository.findById(id);
 		if (!teacher) {
 			throw new TeacherServiceError("Õpetajat ei leitud", "TEACHER_NOT_FOUND");
 		}
-		return teacher;
+		
+		const ratingCount = await TeacherRepository.getRatingCount(id);
+		const teacherObj = teacher.toJSON ? teacher.toJSON() : teacher;
+		return {
+			...teacherObj,
+			ratingCount,
+		};
 	}
 
 	async createTeacher(data: CreateTeacherDTO): Promise<Teacher> {

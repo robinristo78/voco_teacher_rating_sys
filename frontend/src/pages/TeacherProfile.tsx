@@ -181,6 +181,7 @@ export default function TeacherProfile() {
 								<span>{averageRating.toFixed(2)}</span>
 							</div>
 							<p className='text-sm text-gray-600 dark:text-gray-300'>Keskmine hinnang</p>
+							<p className='text-xs text-gray-500 dark:text-gray-400 mt-1'>({ratings.length} hinnang{ratings.length !== 1 ? 'ut' : ''})</p>
 						</div>
 					</div>
 
@@ -202,7 +203,7 @@ export default function TeacherProfile() {
 			</div>
 
 			<div className='mt-10 flex items-center justify-between'>
-				<h2 className='text-2xl font-bold text-gray-900 dark:text-white'>Hinnangud</h2>
+				<h2 className='text-2xl font-bold text-gray-900 dark:text-white'>Hinnangud ({ratings.length})</h2>
 				<button
 					onClick={() => setShowReviewForm(!showReviewForm)}
 					className='bg-blue-600 text-white px-5 py-2 rounded-lg font-semibold hover:bg-blue-700'

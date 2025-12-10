@@ -1,5 +1,6 @@
 import { DataTypes, Model } from "@sequelize/core";
 import sequelize from "../database";
+import { Rating } from "./RatingsModel";
 
 interface TeacherAttributes {
 	id?: number;
@@ -13,6 +14,8 @@ interface TeacherAttributes {
 	image?: string;
 	avgRating?: number;
 	updatedAt?: Date;
+	Ratings?: Rating[];
+	ratingCount?: number;
 }
 
 class Teacher extends Model<TeacherAttributes> implements TeacherAttributes {
@@ -27,6 +30,8 @@ class Teacher extends Model<TeacherAttributes> implements TeacherAttributes {
 	public image?: string;
 	public avgRating?: number;
 	public updatedAt?: Date;
+	public Ratings?: Rating[];
+	public ratingCount?: number;
 }
 
 Teacher.init(

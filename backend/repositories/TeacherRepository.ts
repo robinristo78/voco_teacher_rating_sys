@@ -1,4 +1,5 @@
 import { Teacher } from "../models/TeacherModel";
+import { Rating } from "../models/RatingsModel";
 
 export interface CreateTeacherDTO {
 	name: string;
@@ -61,6 +62,11 @@ class TeacherRepository {
 		avgRating: number
 	): Promise<Teacher | null> {
 		return this.update(id, { avgRating });
+	}
+
+	async getRatingCount(teacherId: number): Promise<number> {
+		const count = await Rating.count({ where: { teacherId } });
+		return count;
 	}
 }
 

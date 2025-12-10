@@ -47,10 +47,15 @@ const TeacherCard = ({ teacher }: TeacherCardProps) => {
 					<p className='text-sm text-gray-600 dark:text-gray-300'>
 						{teacher.unit}
 					</p>
-					<div className='flex items-center mt-2'>
-						<StarIcon className='w-5 h-5 text-yellow-400' />
-						<span className='ml-1 text-gray-700 dark:text-gray-200 font-semibold'>
-							{teacherRating.toFixed(1) ?? "0.0"}
+					<div className='flex items-center mt-2 gap-3'>
+						<div className='flex items-center'>
+							<StarIcon className='w-5 h-5 text-yellow-400' />
+							<span className='ml-1 text-gray-700 dark:text-gray-200 font-semibold'>
+								{teacherRating.toFixed(1) ?? "0.0"}
+							</span>
+						</div>
+						<span className='text-sm text-gray-500 dark:text-gray-400'>
+							({teacher.ratingCount ?? 0})
 						</span>
 					</div>
 				</div>

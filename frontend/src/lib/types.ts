@@ -25,4 +25,5 @@ export interface Teacher {
 	avgRating: number;
 	updatedAt: string;
 	reviews: Rating[];
+	ratingCount?: number;
 }

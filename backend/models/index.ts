@@ -12,11 +12,11 @@ export const initializeDatabase = (sequelize: Sequelize) => {
 	db.User = User;
 
 	// Set up associations
-	db.Teacher.hasMany(db.Rating, { foreignKey: "teacherId" });
-	db.Rating.belongsTo(db.Teacher, { foreignKey: "teacherId" });
+	db.Teacher.hasMany(db.Rating, { foreignKey: "teacherId", as: "Ratings" });
+	db.Rating.belongsTo(db.Teacher, { foreignKey: "teacherId", as: "Teacher" });
 
-	db.User.hasMany(db.Rating, { foreignKey: "userId" });
-	db.Rating.belongsTo(db.User, { foreignKey: "userId" });
+	db.User.hasMany(db.Rating, { foreignKey: "userId", as: "Ratings" });
+	db.Rating.belongsTo(db.User, { foreignKey: "userId", as: "User" });
 
 	db.sequelize = sequelize;
 
