@@ -47,7 +47,7 @@ export async function sendVerificationEmail(
 				from: EMAIL_FROM || "no-reply@voco.ee",
 				to: email,
 				subject: "Kinnita oma konto",
-				text: `Tere, ${name}!\n\nKinnitamiseks ava link: ${verifyUrl}\nKui sa ei loonud kontot, siis ignoeri seda kirja.`,
+				text: `Tere, ${name}!\n\nKinnitamiseks ava link: ${verifyUrl}\nKui sa ei loonud kontot, siis ignoreeri seda kirja.`,
 				html: `
 					<div>
 						<p>Tere, ${name}!</p>
