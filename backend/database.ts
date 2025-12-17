@@ -3,10 +3,10 @@ import * as dotenv from "dotenv";
 dotenv.config();
 
 import { Sequelize, DataTypes } from "@sequelize/core";
-import { MariaDbDialect } from "@sequelize/mariadb";
+import { MySqlDialect } from "@sequelize/mysql";
 
 const sequelize = new Sequelize({
-	dialect: MariaDbDialect,
+	dialect: MySqlDialect,
 	database: process.env.DB_NAME,
 	user: process.env.DB_USER,
 	password: process.env.DB_PASSWORD,
@@ -26,7 +26,7 @@ export const initDb = async () => {
 		initializeDatabase(sequelize);
 
 		// Sync all models with the database
-		await sequelize.sync();
+		await sequelize.sync({ alter: true });
 
 		// Add verification columns if they don't exist (for existing tables)
 		try {
@@ -37,9 +37,11 @@ export const initDb = async () => {
 			});
 			console.log("Added isVerified column to users table.");
 		} catch (columnError: any) {
-			if (!columnError.message.includes("Duplicate")) {
-				console.error("Error adding isVerified column:", columnError.message);
-			}
+			// Ignore "Duplicate" errors, log others
+            if (!columnError.message?.includes("Duplicate") && !columnError.message?.includes("ER_DUP_FIELDNAME")) {
+				// Note: MySQL error for duplicate column is often ER_DUP_FIELDNAME
+			   console.error("Error adding isVerified column:", columnError.message);
+		   }
 		}
 
 		try {
