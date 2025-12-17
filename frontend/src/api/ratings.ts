@@ -47,3 +47,17 @@ export async function getRatingsByTeacher(teacherId: string) {
 
   return response.json();
 }
+
+export async function deleteRating(id: number) {
+  const response = await fetch(`${API_BASE_URL}/ratings/${id}`, {
+    method: "DELETE",
+  });
+
+  if (!response.ok) {
+    // Try to parse error message, fallback to generic text
+    const errorData = await response.json().catch(() => ({})); 
+    throw new Error(errorData.error || "Failed to delete rating");
+  }
+
+  return response.json();
+}

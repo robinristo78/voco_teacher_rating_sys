@@ -15,7 +15,7 @@ router.get("/teachers/:id", TeacherController.getTeacherById);
 // --- HINNANGUD ---
 router.post("/ratings", RatingController.createRating);
 router.get("/teachers/:teacherId/ratings", RatingController.getRatingsByTeacher);
-// router.delete("/ratings/:id", RatingController.deleteRating); // Kommenteeri sisse kui olemas
+router.delete("/ratings/:id", RatingController.deleteRating);
 
 // --- KASUTAJAD (AUTH) ---
 router.post("/auth/register", UserController.register);

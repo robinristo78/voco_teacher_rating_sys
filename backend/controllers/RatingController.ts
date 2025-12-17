@@ -42,3 +42,29 @@ export const getRatingsByTeacher = async (req: Request, res: Response) => {
 		res.status(500).json({ error: "Serveri viga" });
 	}
 };
+
+export const deleteRating = async (req: Request, res: Response) => {
+    try {
+        const ratingId = Number(req.params.id);
+        
+        if (isNaN(ratingId)) {
+             return res.status(400).json({ error: "Vigane ID" });
+        }
+
+        await RatingService.deleteRating(ratingId);
+        
+        res.status(200).json({ message: "Hinnang kustutatud" });
+    } catch (error: any) {
+        console.error("Failed to delete rating:", error);
+        if (error instanceof RatingServiceError) {
+            if (error.code === "RATING_NOT_FOUND") {
+                return res.status(404).json({ error: error.message });
+            }
+            // Handle permission errors if you have them (e.g. trying to delete someone else's rating)
+            if (error.code === "UNAUTHORIZED") {
+                return res.status(403).json({ error: error.message });
+            }
+        }
+        res.status(500).json({ error: "Serveri viga" });
+    }
+};

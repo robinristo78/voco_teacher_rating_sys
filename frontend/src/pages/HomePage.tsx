@@ -6,16 +6,35 @@ import TeacherCard from "../components/TeacherCard"; // import the TeacherCard c
 
 export default function HomePage() {
 	const [teachersList, setTeachersList] = useState([] as Teacher[]);
+	const [isLoading, setIsLoading] = useState(true); // Add loading state
+    const [error, setError] = useState<string | null>(null); // Add error state
 
 	useEffect(() => {
 		async function fetchTeachers() {
 			try {
 				const response = await fetch("/api/teachers");
+
+				// 1. Check if response is successful (Status 200-299)
+                if (!response.ok) {
+                    throw new Error(`Server error: ${response.status}`);
+                }
+
 				const data = await response.json();
-				setTeachersList(data);
+
+				// 2. SAFETY CHECK: Ensure data is actually an array before setting state
+                if (Array.isArray(data)) {
+                    setTeachersList(data);
+                } else {
+                    console.error("Data received is not an array:", data);
+                    setTeachersList([]); 
+                }
 			} catch (error) {
 				console.error("Failed to fetch teachers:", error);
-			}
+                setError("Failed to load teachers.");
+                setTeachersList([]); // Ensure it stays an array
+			} finally {
+                setIsLoading(false);
+            }
 		}
 		fetchTeachers();
 	}, []);
