@@ -84,29 +84,39 @@ class RatingService {
 
 		// Kontrolli, kas õpetaja eksisteerib
 		const teacher = await TeacherRepository.findById(data.teacherId);
-		if (!teacher) {
-			throw new RatingServiceError("Õpetajat ei leitud", "TEACHER_NOT_FOUND");
-		}
+        if (!teacher) {
+            throw new RatingServiceError("Õpetajat ei leitud", "TEACHER_NOT_FOUND");
+        }
 
 		// Validate user only if userId is provided
 		if (data.userId) {
-			const user = await UserRepository.findById(data.userId);
-			if (!user) {
-				throw new RatingServiceError("Kasutajat ei leitud", "USER_NOT_FOUND");
-			}
+            const user = await UserRepository.findById(data.userId);
+            if (!user) {
+                throw new RatingServiceError("Kasutajat ei leitud", "USER_NOT_FOUND");
+            }
 
-			// Check if user has already rated this teacher
-			const existingRating = await RatingRepository.findByTeacherAndUser(
-				data.teacherId,
-				data.userId
-			);
-			if (existingRating) {
-				throw new RatingServiceError(
-					"Oled juba sellele õpetajale hinnangu andnud",
-					"DUPLICATE_RATING"
-				);
-			}
-		}
+            // Check if user has already rated this teacher
+            const existingRating = await RatingRepository.findByTeacherAndUser(
+                data.teacherId,
+                data.userId
+            );
+
+            // --- MUUDATUS (CHANGE): UPDATE INSTEAD OF ERROR ---
+            if (existingRating) {
+                console.log(`User ${data.userId} already rated teacher ${data.teacherId}. Updating existing rating ID ${existingRating.id}.`);
+                
+                // Update the existing rating
+                const updatedRating = await RatingRepository.update(existingRating.id, {
+                    rating: data.rating,
+                    description: data.description.trim(),
+                });
+
+                // Update teacher average
+                await this.updateTeacherAvgRating(data.teacherId);
+
+                return updatedRating!;
+            }
+        }
 
 		// Loo hinnang
 		const createData = {
@@ -172,26 +182,19 @@ class RatingService {
 		return updatedRating!;
 	}
 
-	async deleteRating(id: number, userId: number): Promise<void> {
-		const rating = await this.getRatingById(id);
+	async deleteRating(id: number): Promise<void> {
+        const rating = await this.getRatingById(id);
+        
+        const teacherId = rating.teacherId;
 
-		// Kontrolli, kas kasutaja on hinnangu autor
-		if (rating.userId !== userId) {
-			throw new RatingServiceError(
-				"Sul pole õigust seda hinnangut kustutada",
-				"FORBIDDEN"
-			);
-		}
+        // Perform the delete
+        await RatingRepository.delete(id);
 
-		const teacherId = rating.teacherId;
-
-		await RatingRepository.delete(id);
-
-		// Uuenda õpetaja keskmist hinnangut
-		if (teacherId) {
-			await this.updateTeacherAvgRating(teacherId);
-		}
-	}
+        // Update the teacher's average rating
+        if (teacherId) {
+            await this.updateTeacherAvgRating(teacherId);
+        }
+    }
 
 	private async updateTeacherAvgRating(teacherId: number): Promise<void> {
 		const avgRating = await RatingRepository.getAverageRatingForTeacher(

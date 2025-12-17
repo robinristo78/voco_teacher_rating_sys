@@ -8,6 +8,8 @@ export const getAllTeachers = async (req: Request, res: Response) => {
 		const teachers = await TeacherService.getAllTeachers();
 		res.json(teachers);
 	} catch (error) {
+		console.error("Detailed Error in getAllTeachers:", error);
+		res.status(500).json({ error: "Serveri viga" });
 		res.status(500).json({ error: "Serveri viga" });
 	}
 };

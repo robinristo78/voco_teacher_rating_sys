@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { StarIcon } from "@heroicons/react/24/solid";
 import { toast } from "sonner";
-import { createRating, getRatingsByTeacher, getTeacher } from "../api/ratings";
+import { createRating, getRatingsByTeacher, getTeacher, deleteRating } from "../api/ratings";
 import type { Rating, Teacher } from "../lib/types";
 
 export default function TeacherProfile() {
@@ -16,6 +16,7 @@ export default function TeacherProfile() {
 	const [submitting, setSubmitting] = useState(false);
 	const [reviewForm, setReviewForm] = useState({ rating: 0, comment: "" });
 	const [user, setUser] = useState<{ id: number; name: string } | null>(null);
+	const [deleteConfirm, setDeleteConfirm] = useState(false);
 
 	useEffect(() => {
 		const storedUser = localStorage.getItem("user");
@@ -65,6 +66,12 @@ export default function TeacherProfile() {
 		return Number(teacher?.avgRating ?? 0);
 	}, [ratings, teacher?.avgRating]);
 
+	// Separate user's review from others
+    const userRating = useMemo(() => {
+        if (!user) return null;
+        return ratings.find((r) => r.userId === user.id);
+    }, [ratings, user]);
+
 	const renderStars = (value: number, interactive = false, onSelect?: (val: number) => void) => (
 		<div className='flex gap-1'>
 			{[1, 2, 3, 4, 5].map((star) => (
@@ -82,6 +89,21 @@ export default function TeacherProfile() {
 			))}
 		</div>
 	);
+
+	// Handle opening/closing the form with pre-fill logic
+    const toggleReviewForm = () => {
+        if (!showReviewForm && userRating) {
+            // If opening the form and user has a rating, pre-fill it
+            setReviewForm({ 
+                rating: userRating.rating, 
+                comment: userRating.description 
+            });
+        } else if (!showReviewForm) {
+            // If opening fresh, reset it
+            setReviewForm({ rating: 0, comment: "" });
+        }
+        setShowReviewForm(!showReviewForm);
+    };
 
 	const handleSubmitReview = async (event: React.FormEvent) => {
 		event.preventDefault();
@@ -111,7 +133,7 @@ export default function TeacherProfile() {
 				teacherId: Number(id),
 				userId: user.id,
 			});
-			toast.success("Hinnang lisatud!");
+			toast.success(userRating ? "Hinnang muudetud!" : "Hinnang lisatud!");
 			setReviewForm({ rating: 0, comment: "" });
 			setShowReviewForm(false);
 			const [teacherData, ratingsData] = await Promise.all([
@@ -125,6 +147,34 @@ export default function TeacherProfile() {
 			toast.error(submitError?.message || "Hinnangu lisamine ebaõnnestus");
 		} finally {
 			setSubmitting(false);
+		}
+	};
+
+	const handleDelete = async () => {
+		if (!userRating) return;
+	
+		// Step 1: First click just changes state
+		if (!deleteConfirm) {
+			setDeleteConfirm(true);
+			return;
+		}
+	
+		// Step 2: Second click performs the action
+		try {
+			await deleteRating(userRating.id);
+			toast.success("Hinnang kustutatud!");
+			
+			// Refresh data
+			const [teacherData, ratingsData] = await Promise.all([
+				getTeacher(id!),
+				getRatingsByTeacher(id!),
+			]);
+			setTeacher(teacherData);
+			setRatings(ratingsData);
+			setDeleteConfirm(false); // Reset state
+		} catch (err: any) {
+			toast.error("Kustutamine ebaõnnestus");
+			console.error(err);
 		}
 	};
 
@@ -205,19 +255,56 @@ export default function TeacherProfile() {
 			<div className='mt-10 flex items-center justify-between'>
 				<h2 className='text-2xl font-bold text-gray-900 dark:text-white'>Hinnangud ({ratings.length})</h2>
 				<button
-					onClick={() => setShowReviewForm(!showReviewForm)}
+					onClick={toggleReviewForm}
 					className='bg-blue-600 text-white px-5 py-2 rounded-lg font-semibold hover:bg-blue-700'
 				>
-					{showReviewForm ? "Tühista" : "Hinda õpetajat"}
+					{showReviewForm 
+						? "Tühista" 
+						: (userRating ? "Hinda uuesti õpetajat" : "Hinda õpetajat")
+					}
 				</button>
 			</div>
+
+			{/* HIGHLIGHTED USER REVIEW */}
+            {userRating && (
+                <div className='mt-6 bg-blue-50 dark:bg-blue-900/20 border-l-4 border-blue-500 rounded-r-lg shadow-sm p-5'>
+                    <div className='flex items-center justify-between mb-2'>
+                        <div className='flex items-center gap-3'>
+                            <div className='w-10 h-10 rounded-full bg-blue-200 dark:bg-blue-800 flex items-center justify-center text-blue-800 dark:text-blue-100 font-bold'>
+                                {user?.name ? user.name.charAt(0).toUpperCase() : "M"}
+                            </div>
+                            <div>
+                                <p className='text-sm font-bold text-gray-900 dark:text-white'>
+                                    {user?.name} <span className="font-normal text-gray-500 dark:text-gray-400">(Sinu hinnang)</span>
+                                </p>
+                                <p className='text-xs text-gray-500'>
+                                    {new Date(userRating.createdAt).toLocaleDateString("et-EE")}
+                                </p>
+                            </div>
+                        </div>
+                        {renderStars(userRating.rating)}
+                    </div>
+                    <p className='text-gray-800 dark:text-gray-100 whitespace-pre-line mt-2 pl-1'>
+                        {userRating.description}
+                    </p>
+
+					{/* DELETE BUTTON */}
+					<div className="flex justify-end mt-2">
+						<button
+							onClick={handleDelete}
+							className={`bottom-2 right-4 text-xs font-semibold text-gray-400 hover:text-gray-600 hover:underline transition-colors`}>
+							{deleteConfirm ? "Kinnita kustutamine" : "Kustuta"}
+						</button>
+					</div>
+                </div>
+            )}
 
 			{showReviewForm && (
 				<form
 					onSubmit={handleSubmitReview}
 					className='bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mt-6'
 				>
-					<h3 className='text-xl font-semibold text-gray-900 dark:text-white mb-4'>Kirjuta hinnang</h3>
+					<h3 className='text-xl font-semibold text-gray-900 dark:text-white mb-4'>{userRating ? "Muuda hinnang" : "Kirjuta hinnang"}</h3>
 					<div className='flex gap-2 mb-4'>
 						{renderStars(reviewForm.rating, true, (ratingValue) =>
 							setReviewForm((prev) => ({ ...prev, rating: ratingValue }))
