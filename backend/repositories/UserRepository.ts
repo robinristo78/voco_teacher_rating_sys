@@ -1,23 +1,15 @@
 import { User } from "../models/UserModel";
 
-
 export interface CreateUserDTO {
 	name: string;
 	email: string;
 	password: string;
-	isVerified?: boolean;
-	verificationToken?: string | null;
-	verificationExpires?: Date | null;
 }
-
 
 export interface UpdateUserDTO {
 	name?: string;
 	email?: string;
 	password?: string;
-	isVerified?: boolean;
-	verificationToken?: string | null;
-	verificationExpires?: Date | null;
 }
 
 class UserRepository {
@@ -33,21 +25,9 @@ class UserRepository {
 		return User.findOne({ where: { email } });
 	}
 
-	async findByEmailToken(token: string): Promise<User | null> {
-		return User.findOne({ where: { verificationToken: token } });
+	async create(data: CreateUserDTO): Promise<User> {
+		return User.create(data);
 	}
-
-	       async create(data: CreateUserDTO): Promise<User> {
-		       // Explicitly pass all fields to User.create
-		       return User.create({
-			       name: data.name,
-			       email: data.email,
-			       password: data.password,
-			       isVerified: data.isVerified ?? false,
-			       verificationToken: data.verificationToken ?? null,
-			       verificationExpires: data.verificationExpires ?? null,
-		       });
-	       }
 
 	async update(id: number, data: UpdateUserDTO): Promise<User | null> {
 		const user = await this.findById(id);

@@ -14,12 +14,14 @@ router.get("/teachers/:id", TeacherController.getTeacherById);
 
 // --- HINNANGUD ---
 router.post("/ratings", RatingController.createRating);
-router.get("/teachers/:teacherId/ratings", RatingController.getRatingsByTeacher);
+router.get(
+	"/teachers/:teacherId/ratings",
+	RatingController.getRatingsByTeacher
+);
 router.delete("/ratings/:id", RatingController.deleteRating);
 
 // --- KASUTAJAD (AUTH) ---
 router.post("/auth/register", UserController.register);
 router.post("/auth/login", UserController.login);
-router.get("/auth/verify", UserController.verifyEmail);
 
 export default router;
